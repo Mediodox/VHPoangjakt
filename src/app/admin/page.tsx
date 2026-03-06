@@ -19,6 +19,21 @@ type CandidateItem = {
   challenges: { title: string } | null;
 };
 
+type CandidateQueryRow = {
+  id: string;
+  class_id: string | null;
+  challenge_id: string | null;
+  parsed_points: number | null;
+  parser_notes: string | null;
+  instagram_post_id: string;
+  created_at: string;
+  instagram_posts_raw:
+    | { post_url: string; source_handle: string; caption: string | null }[]
+    | null;
+  classes: { name: string }[] | null;
+  challenges: { title: string }[] | null;
+};
+
 export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [authed, setAuthed] = useState(false);
@@ -41,6 +56,10 @@ export default function AdminDashboardPage() {
     () => Object.fromEntries(classes.map((item) => [item.id, item.name])),
     [classes]
   );
+
+  function firstOrNull<T>(value: T[] | null | undefined): T | null {
+    return value?.[0] ?? null;
+  }
 
   useEffect(() => {
     void bootstrap();
@@ -110,7 +129,22 @@ export default function AdminDashboardPage() {
 
     setClasses((classResult.data ?? []) as ClassItem[]);
     setChallenges((challengeResult.data ?? []) as ChallengeItem[]);
-    setCandidates((candidateResult.data ?? []) as CandidateItem[]);
+
+    const mappedCandidates: CandidateItem[] = ((candidateResult.data ??
+      []) as CandidateQueryRow[]).map((candidate) => ({
+      id: candidate.id,
+      class_id: candidate.class_id,
+      challenge_id: candidate.challenge_id,
+      parsed_points: candidate.parsed_points,
+      parser_notes: candidate.parser_notes,
+      instagram_post_id: candidate.instagram_post_id,
+      created_at: candidate.created_at,
+      instagram_posts_raw: firstOrNull(candidate.instagram_posts_raw),
+      classes: firstOrNull(candidate.classes),
+      challenges: firstOrNull(candidate.challenges)
+    }));
+
+    setCandidates(mappedCandidates);
     if (!manualClassId && classResult.data?.[0]?.id) {
       setManualClassId(classResult.data[0].id);
     }
