@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getRecentEvents } from "@/lib/public-data";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
