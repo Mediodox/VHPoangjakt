@@ -4,7 +4,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 function getInstagramUrl(handle: string) {
-  return `https://instagram.com/${handle.replace(/^@/, "")}`;
+  return `${handle.replace(/^@/, "")}`;
 }
 
 export default async function EventsPage() {
