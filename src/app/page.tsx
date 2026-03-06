@@ -28,7 +28,7 @@ export default async function HomePage() {
           Poängjaktens <span className="hero-title-glow">Leaderboard</span>
         </h2>
         <p className="hero-subtitle">
-          Realtidsresultat för poängjakten. Poäng uppdateras efter godkända händelser.
+           Poäng kan ta upp till 1 dag att uppdateras efter godkända händelser.
         </p>
       </section>
 

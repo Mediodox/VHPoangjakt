@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "VH Poängjakt",
-  description: "Live scoreboard for class challenge points."
+  description: "Leaderboard för Västerhöjds Poängjakt 2026"
 };
 
 export default function RootLayout({
@@ -19,7 +19,7 @@ export default function RootLayout({
               <div>
                 <h1 className="brand-title">Västerhöjds Poängjakt 2026</h1>
                 <p className="brand-subtitle">
-                  Live poängtavla för utmaningar mellan skolans 3or.
+                   Poängtavla för utmaningar mellan skolans 3or.
                 </p>
               </div>
               
