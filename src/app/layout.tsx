@@ -17,9 +17,9 @@ export default function RootLayout({
           <header className="top-header">
             <div className="brand-row">
               <div>
-                <h1 className="brand-title">VH Poangjakt Sportboard</h1>
+                <h1 className="brand-title">VH Poängjakt</h1>
                 <p className="brand-subtitle">
-                  Live tavla for utmaningar mellan skolans klasser.
+                  Live poängtavla för utmaningar mellan skolans klasser.
                 </p>
               </div>
               <span className="status-pill">Live League</span>
@@ -29,7 +29,7 @@ export default function RootLayout({
                 Leaderboard
               </Link>
               <Link className="nav-link" href="/events">
-                Handelser
+                Händelser
               </Link>
               <Link className="nav-link" href="/admin/login">
                 Admin login

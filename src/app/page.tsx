@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 function getInstagramUrl(handle: string) {
-  return `https://instagram.com/${handle.replace(/^@/, "")}`;
+  return `${handle.replace(/^@/, "")}`;
 }
 
 export default async function HomePage() {
@@ -20,10 +20,10 @@ export default async function HomePage() {
     <div className="stack">
       <section className="page-hero">
         <h2 className="hero-title">
-          Class Battle <span className="hero-title-glow">Leaderboard</span>
+          Poängjaktens <span className="hero-title-glow">Leaderboard</span>
         </h2>
         <p className="hero-subtitle">
-          Realtidsresultat for poangjakten. Poang uppdateras efter godkanda events.
+          Realtidsresultat för poängjakten. Poäng uppdateras efter godkända händelser.
         </p>
       </section>
 
@@ -33,7 +33,7 @@ export default async function HomePage() {
         </h3>
         {topThree.length === 0 ? (
           <div className="empty-state">
-            Inga poang an. Lag till events i adminpanelen for att starta tavlingen.
+            Inga poäng än. Lägg till händelser i adminpanelen för att starta tävlingen.
           </div>
         ) : (
           <div className="podium">
@@ -42,7 +42,7 @@ export default async function HomePage() {
                 <p className="podium-top">2nd Place</p>
                 <p className="podium-name">{topThree[1].class_name}</p>
                 <p className="podium-handle">@{topThree[1].instagram_handle}</p>
-                <p className="podium-points">{topThree[1].total_points} p</p>
+                <p className="podium-points">{topThree[1].total_points} poäng</p>
                 <a
                   className="insta-button"
                   href={getInstagramUrl(topThree[1].instagram_handle)}
@@ -107,7 +107,7 @@ export default async function HomePage() {
             Full <span className="accent">Ranking</span>
           </h3>
           {leaderboard.length === 0 ? (
-            <div className="empty-state">Inga klasser med poang just nu.</div>
+            <div className="empty-state">Inga klasser med poäng just nu.</div>
           ) : (
             <ul className="leaderboard-list">
               {[...topThree, ...rest].map((row, index) => (
@@ -120,7 +120,7 @@ export default async function HomePage() {
                     </div>
                   </div>
                   <div className="leader-actions">
-                    <span className="score-chip">{row.total_points} poang</span>
+                    <span className="score-chip">{row.total_points} poäng</span>
                     <a
                       className="insta-button"
                       href={getInstagramUrl(row.instagram_handle)}
@@ -141,7 +141,7 @@ export default async function HomePage() {
             Senaste <span className="accent">Events</span>
           </h3>
           {recent.length === 0 ? (
-            <div className="empty-state">Inga handelser annu.</div>
+            <div className="empty-state">Inga händelser ännu.</div>
           ) : (
             <div className="timeline">
               {recent.map((event) => (
@@ -164,7 +164,7 @@ export default async function HomePage() {
                       }`}
                     >
                       {event.points > 0 ? "+" : ""}
-                      {event.points} p
+                      {event.points} poäng
                     </span>
                   </div>
                   <p className="timeline-body">
@@ -176,7 +176,7 @@ export default async function HomePage() {
             </div>
           )}
           <p>
-            <Link href="/events">Visa alla handelser</Link>
+            <Link href="/events">Visa alla händelser</Link>
           </p>
         </article>
       </section>

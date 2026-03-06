@@ -17,16 +17,16 @@ export default async function EventsPage() {
           Match <span className="hero-title-glow">Event Feed</span>
         </h2>
         <p className="hero-subtitle">
-          Historik over alla godkanda poanghandelser i tavlingen.
+          Historik över alla godkända poänghändelser i tävlingen.
         </p>
       </section>
 
       <section className="card">
         <h3 className="section-title">
-          Alla godkanda <span className="accent">Handelser</span>
+          Alla godkända <span className="accent">Händelser</span>
         </h3>
         {events.length === 0 ? (
-          <div className="empty-state">Inga handelser annu.</div>
+          <div className="empty-state">Inga händelser ännu.</div>
         ) : (
           <div className="timeline">
             {events.map((event) => (
@@ -50,7 +50,7 @@ export default async function EventsPage() {
                     }`}
                   >
                     {event.points > 0 ? "+" : ""}
-                    {event.points} poang
+                    {event.points} poäng
                   </span>
                 </div>
                 <p className="timeline-body">
