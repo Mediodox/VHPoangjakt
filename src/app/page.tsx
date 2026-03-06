@@ -4,6 +4,10 @@ import { getLeaderboard, getRecentEvents } from "@/lib/public-data";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
+function getInstagramUrl(handle: string) {
+  return `https://instagram.com/${handle.replace(/^@/, "")}`;
+}
+
 export default async function HomePage() {
   const [leaderboard, recent] = await Promise.all([
     getLeaderboard(),
@@ -39,6 +43,14 @@ export default async function HomePage() {
                 <p className="podium-name">{topThree[1].class_name}</p>
                 <p className="podium-handle">@{topThree[1].instagram_handle}</p>
                 <p className="podium-points">{topThree[1].total_points} p</p>
+                <a
+                  className="insta-button"
+                  href={getInstagramUrl(topThree[1].instagram_handle)}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Instagram
+                </a>
               </article>
             ) : (
               <article className="podium-card">
@@ -53,6 +65,14 @@ export default async function HomePage() {
                 <p className="podium-name">{topThree[0].class_name}</p>
                 <p className="podium-handle">@{topThree[0].instagram_handle}</p>
                 <p className="podium-points">{topThree[0].total_points} p</p>
+                <a
+                  className="insta-button"
+                  href={getInstagramUrl(topThree[0].instagram_handle)}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Instagram
+                </a>
               </article>
             ) : null}
 
@@ -62,6 +82,14 @@ export default async function HomePage() {
                 <p className="podium-name">{topThree[2].class_name}</p>
                 <p className="podium-handle">@{topThree[2].instagram_handle}</p>
                 <p className="podium-points">{topThree[2].total_points} p</p>
+                <a
+                  className="insta-button"
+                  href={getInstagramUrl(topThree[2].instagram_handle)}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Instagram
+                </a>
               </article>
             ) : (
               <article className="podium-card">
@@ -91,7 +119,17 @@ export default async function HomePage() {
                       <span>@{row.instagram_handle}</span>
                     </div>
                   </div>
-                  <span className="score-chip">{row.total_points} poang</span>
+                  <div className="leader-actions">
+                    <span className="score-chip">{row.total_points} poang</span>
+                    <a
+                      className="insta-button"
+                      href={getInstagramUrl(row.instagram_handle)}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Instagram
+                    </a>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -109,7 +147,17 @@ export default async function HomePage() {
               {recent.map((event) => (
                 <div className="timeline-item" key={event.id}>
                   <div className="timeline-top">
-                    <span className="timeline-class">{event.class_name}</span>
+                    <div className="timeline-head">
+                      <span className="timeline-class">{event.class_name}</span>
+                      <a
+                        className="insta-button insta-button-small"
+                        href={getInstagramUrl(event.instagram_handle)}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Instagram
+                      </a>
+                    </div>
                     <span
                       className={`score-chip ${
                         event.points >= 0 ? "score-positive" : "score-negative"

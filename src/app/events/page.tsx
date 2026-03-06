@@ -3,6 +3,10 @@ import { getRecentEvents } from "@/lib/public-data";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
+function getInstagramUrl(handle: string) {
+  return `https://instagram.com/${handle.replace(/^@/, "")}`;
+}
+
 export default async function EventsPage() {
   const events = await getRecentEvents(200);
 
@@ -28,9 +32,17 @@ export default async function EventsPage() {
             {events.map((event) => (
               <article key={event.id} className="timeline-item">
                 <div className="timeline-top">
-                  <div>
+                  <div className="timeline-head">
                     <span className="timeline-class">{event.class_name}</span>{" "}
                     <span className="timeline-handle">@{event.instagram_handle}</span>
+                    <a
+                      className="insta-button insta-button-small"
+                      href={getInstagramUrl(event.instagram_handle)}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Instagram
+                    </a>
                   </div>
                   <span
                     className={`score-chip ${
