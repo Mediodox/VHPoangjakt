@@ -187,9 +187,30 @@ export default function AdminDashboardPage() {
   async function addManualEvent(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
+    const normalizedReason = manualReason.trim();
+    if (!normalizedReason) {
+      setError("Anledning måste fyllas i.");
+      return;
+    }
+
     const absolutePoints = Math.abs(manualPoints);
     if (!Number.isFinite(absolutePoints) || absolutePoints <= 0) {
       setError("Ange ett poängvärde större än 0.");
+      return;
+    }
+
+    const { data: duplicateRows, error: duplicateError } = await supabaseBrowser
+      .from("point_events")
+      .select("id")
+      .eq("class_id", manualClassId)
+      .eq("reason", normalizedReason)
+      .limit(1);
+    if (duplicateError) {
+      setError(duplicateError.message);
+      return;
+    }
+    if (duplicateRows && duplicateRows.length > 0) {
+      setError("En poänghändelse med samma klass och anledning finns redan.");
       return;
     }
 
@@ -197,7 +218,7 @@ export default function AdminDashboardPage() {
     const { error: insertError } = await supabaseBrowser.from("point_events").insert({
       class_id: manualClassId,
       points: signedPoints,
-      reason: manualReason.trim()
+      reason: normalizedReason
     });
     if (insertError) {
       setError(insertError.message);
@@ -348,6 +369,10 @@ export default function AdminDashboardPage() {
 
       <section className="card">
         <h3>Manuellt poängevent</h3>
+        <div className="empty-state">
+          <strong>GUIDELINES:</strong> Ange klass, antal poäng och under anledning
+          skriv vilken utmaning som genomförts som t.ex. Utmaning 5
+        </div>
         <form onSubmit={addManualEvent} className="row">
           <select
             value={manualClassId}
