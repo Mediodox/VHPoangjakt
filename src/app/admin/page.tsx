@@ -51,6 +51,7 @@ export default function AdminDashboardPage() {
   const [manualClassId, setManualClassId] = useState("");
   const [manualPoints, setManualPoints] = useState(1);
   const [manualReason, setManualReason] = useState("");
+  const [manualMode, setManualMode] = useState<"add" | "remove">("add");
 
   const classMap = useMemo(
     () => Object.fromEntries(classes.map((item) => [item.id, item.name])),
@@ -186,9 +187,14 @@ export default function AdminDashboardPage() {
   async function addManualEvent(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
+    if (manualPoints <= 0) {
+      setError("Poäng måste vara större än 0.");
+      return;
+    }
+    const signedPoints = manualMode === "remove" ? -manualPoints : manualPoints;
     const { error: insertError } = await supabaseBrowser.from("point_events").insert({
       class_id: manualClassId,
-      points: manualPoints,
+      points: signedPoints,
       reason: manualReason.trim()
     });
     if (insertError) {
@@ -353,10 +359,17 @@ export default function AdminDashboardPage() {
           </select>
           <input
             type="number"
-            min={0}
+            min={1}
             value={manualPoints}
             onChange={(event) => setManualPoints(Number(event.target.value))}
           />
+          <select
+            value={manualMode}
+            onChange={(event) => setManualMode(event.target.value as "add" | "remove")}
+          >
+            <option value="add">Lägg till</option>
+            <option value="remove">Ta bort</option>
+          </select>
           <input
             required
             value={manualReason}

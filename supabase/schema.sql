@@ -50,7 +50,7 @@ create table if not exists public.point_events (
   id uuid primary key default gen_random_uuid(),
   class_id uuid not null references public.classes (id) on delete restrict,
   challenge_id uuid references public.challenges (id) on delete set null,
-  points integer not null check (points >= 0),
+  points integer not null check (points <> 0),
   reason text not null,
   source_candidate_id uuid unique references public.point_candidates (id) on delete set null,
   source_post_id uuid references public.instagram_posts_raw (id) on delete set null,
