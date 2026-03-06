@@ -64,7 +64,7 @@ export default async function HomePage() {
                 <p className="podium-top">1st Place</p>
                 <p className="podium-name">{topThree[0].class_name}</p>
                 <p className="podium-handle">@{topThree[0].instagram_handle}</p>
-                <p className="podium-points">{topThree[0].total_points} p</p>
+                <p className="podium-points">{topThree[0].total_points} poäng</p>
                 <a
                   className="insta-button"
                   href={getInstagramUrl(topThree[0].instagram_handle)}
@@ -81,7 +81,7 @@ export default async function HomePage() {
                 <p className="podium-top">3rd Place</p>
                 <p className="podium-name">{topThree[2].class_name}</p>
                 <p className="podium-handle">@{topThree[2].instagram_handle}</p>
-                <p className="podium-points">{topThree[2].total_points} p</p>
+                <p className="podium-points">{topThree[2].total_points} poäng</p>
                 <a
                   className="insta-button"
                   href={getInstagramUrl(topThree[2].instagram_handle)}
