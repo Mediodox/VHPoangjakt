@@ -1,0 +1,75 @@
+:root {
+  color-scheme: light dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, Segoe UI, Arial, sans-serif;
+  background: #111827;
+  color: #f9fafb;
+}
+
+a {
+  color: #93c5fd;
+}
+
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.card {
+  border: 1px solid #374151;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  background: #1f2937;
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+}
+
+input,
+select,
+textarea {
+  border: 1px solid #4b5563;
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: #111827;
+  color: #f9fafb;
+}
+
+button {
+  border: 1px solid #2563eb;
+  border-radius: 8px;
+  background: #1d4ed8;
+  color: white;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+button.secondary {
+  border-color: #4b5563;
+  background: #374151;
+}
+
+button.danger {
+  border-color: #dc2626;
+  background: #b91c1c;
+}
