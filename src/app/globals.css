@@ -320,17 +320,17 @@ main {
 }
 
 .podium-first:hover {
-  transform: translateY(-6px);
+  transform: translateY(-12px);
   box-shadow: 0 0 32px rgba(255, 173, 74, 0.35), 0 16px 36px rgba(0, 0, 0, 0.6);
 }
 
 .podium-second:hover {
-  transform: translateY(-6px);
+  transform: translateY(-12px);
   box-shadow: 0 0 28px rgba(255, 122, 71, 0.32), 0 14px 30px rgba(0, 0, 0, 0.55);
 }
 
 .podium-third:hover {
-  transform: translateY(-6px);
+  transform: translateY(-12px);
   box-shadow: 0 0 24px rgba(255, 86, 58, 0.28), 0 12px 28px rgba(0, 0, 0, 0.5);
 }
 
