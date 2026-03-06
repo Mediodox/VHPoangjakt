@@ -7,21 +7,49 @@ export default async function EventsPage() {
   const events = await getRecentEvents(200);
 
   return (
-    <section className="card">
-      <h2>Alla godkända händelser</h2>
-      {events.length === 0 ? (
-        <p>Inga händelser ännu.</p>
-      ) : (
-        <ul>
-          {events.map((event) => (
-            <li key={event.id}>
-              <strong>{event.class_name}</strong> ({event.instagram_handle}){" "}
-              {event.points > 0 ? "+" : ""}
-              {event.points} poäng - {event.reason}
-            </li>
-          ))}
-        </ul>
-      )}
-    </section>
+    <div className="stack">
+      <section className="page-hero">
+        <h2 className="hero-title">
+          Match <span className="hero-title-glow">Event Feed</span>
+        </h2>
+        <p className="hero-subtitle">
+          Historik over alla godkanda poanghandelser i tavlingen.
+        </p>
+      </section>
+
+      <section className="card">
+        <h3 className="section-title">
+          Alla godkanda <span className="accent">Handelser</span>
+        </h3>
+        {events.length === 0 ? (
+          <div className="empty-state">Inga handelser annu.</div>
+        ) : (
+          <div className="timeline">
+            {events.map((event) => (
+              <article key={event.id} className="timeline-item">
+                <div className="timeline-top">
+                  <div>
+                    <span className="timeline-class">{event.class_name}</span>{" "}
+                    <span className="timeline-handle">@{event.instagram_handle}</span>
+                  </div>
+                  <span
+                    className={`score-chip ${
+                      event.points >= 0 ? "score-positive" : "score-negative"
+                    }`}
+                  >
+                    {event.points > 0 ? "+" : ""}
+                    {event.points} poang
+                  </span>
+                </div>
+                <p className="timeline-body">
+                  {event.challenge_title ? `${event.challenge_title} - ` : ""}
+                  {event.reason}
+                </p>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+    </div>
   );
 }

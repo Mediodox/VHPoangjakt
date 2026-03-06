@@ -13,14 +13,30 @@ export default function RootLayout({
   return (
     <html lang="sv">
       <body>
-        <main>
-          <header className="card">
-            <h1>VH Poängjakt</h1>
-            <div className="row">
-              <Link href="/">Leaderboard</Link>
-              <Link href="/events">Händelser</Link>
-              <Link href="/admin/login">Admin login</Link>
-              <Link href="/admin">Admin dashboard</Link>
+        <main className="app-shell">
+          <header className="top-header">
+            <div className="brand-row">
+              <div>
+                <h1 className="brand-title">VH Poangjakt Sportboard</h1>
+                <p className="brand-subtitle">
+                  Live tavla for utmaningar mellan skolans klasser.
+                </p>
+              </div>
+              <span className="status-pill">Live League</span>
+            </div>
+            <div className="nav-row">
+              <Link className="nav-link" href="/">
+                Leaderboard
+              </Link>
+              <Link className="nav-link" href="/events">
+                Handelser
+              </Link>
+              <Link className="nav-link" href="/admin/login">
+                Admin login
+              </Link>
+              <Link className="nav-link" href="/admin">
+                Admin dashboard
+              </Link>
             </div>
           </header>
           {children}
