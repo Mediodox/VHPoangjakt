@@ -14,7 +14,8 @@ export default async function EventsPage() {
         <ul>
           {events.map((event) => (
             <li key={event.id}>
-              <strong>{event.class_name}</strong> ({event.instagram_handle}) +{" "}
+              <strong>{event.class_name}</strong> ({event.instagram_handle}){" "}
+              {event.points > 0 ? "+" : ""}
               {event.points} poäng - {event.reason}
             </li>
           ))}

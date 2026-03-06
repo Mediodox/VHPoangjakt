@@ -50,8 +50,8 @@ export default function AdminDashboardPage() {
   const [challengePoints, setChallengePoints] = useState(10);
   const [manualClassId, setManualClassId] = useState("");
   const [manualPoints, setManualPoints] = useState(1);
+  const [manualOperation, setManualOperation] = useState<"add" | "subtract">("add");
   const [manualReason, setManualReason] = useState("");
-  const [manualMode, setManualMode] = useState<"add" | "remove">("add");
 
   const classMap = useMemo(
     () => Object.fromEntries(classes.map((item) => [item.id, item.name])),
@@ -187,11 +187,13 @@ export default function AdminDashboardPage() {
   async function addManualEvent(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
-    if (manualPoints <= 0) {
-      setError("Poäng måste vara större än 0.");
+    const absolutePoints = Math.abs(manualPoints);
+    if (!Number.isFinite(absolutePoints) || absolutePoints <= 0) {
+      setError("Ange ett poängvärde större än 0.");
       return;
     }
-    const signedPoints = manualMode === "remove" ? -manualPoints : manualPoints;
+
+    const signedPoints = manualOperation === "subtract" ? -absolutePoints : absolutePoints;
     const { error: insertError } = await supabaseBrowser.from("point_events").insert({
       class_id: manualClassId,
       points: signedPoints,
@@ -364,11 +366,13 @@ export default function AdminDashboardPage() {
             onChange={(event) => setManualPoints(Number(event.target.value))}
           />
           <select
-            value={manualMode}
-            onChange={(event) => setManualMode(event.target.value as "add" | "remove")}
+            value={manualOperation}
+            onChange={(event) =>
+              setManualOperation(event.target.value as "add" | "subtract")
+            }
           >
-            <option value="add">Lägg till</option>
-            <option value="remove">Ta bort</option>
+            <option value="add">Lägg till poäng</option>
+            <option value="subtract">Ta bort poäng</option>
           </select>
           <input
             required

@@ -87,6 +87,21 @@ Vercel request must include:
    - logged-out user cannot access admin actions.
    - non-admin authenticated user cannot write admin tables.
 
+## Enable point deductions on existing DB
+
+If your project was created before deduction support, run this once in Supabase SQL Editor:
+
+```sql
+alter table public.point_events
+drop constraint if exists point_events_points_check;
+
+alter table public.point_events
+add constraint point_events_points_check
+check (points <> 0);
+```
+
+After this migration, admins can use "Ta bort poang" in the manual event form.
+
 ## Important limitations in MVP
 
 - Candidate approval and event insertion currently happens in two client operations (not a single DB transaction).

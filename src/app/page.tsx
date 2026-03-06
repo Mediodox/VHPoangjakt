@@ -35,7 +35,8 @@ export default async function HomePage() {
           <ul>
             {recent.map((event) => (
               <li key={event.id}>
-                <strong>{event.class_name}</strong>: +{event.points} poäng{" "}
+                <strong>{event.class_name}</strong>: {event.points > 0 ? "+" : ""}
+                {event.points} poäng{" "}
                 {event.challenge_title ? `(${event.challenge_title})` : ""} -{" "}
                 {event.reason}
               </li>
