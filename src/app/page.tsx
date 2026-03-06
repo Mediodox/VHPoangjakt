@@ -116,7 +116,7 @@ export default async function HomePage() {
                     <span className="leader-rank">#{index + 1}</span>
                     <div className="leader-meta">
                       <strong>{row.class_name}</strong>
-                      <span>@{row.instagram_handle}</span>
+                      
                     </div>
                   </div>
                   <div className="leader-actions">

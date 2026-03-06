@@ -17,12 +17,12 @@ export default function RootLayout({
           <header className="top-header">
             <div className="brand-row">
               <div>
-                <h1 className="brand-title">VH Poängjakt</h1>
+                <h1 className="brand-title">Västerhöjds Poängjakt 2026</h1>
                 <p className="brand-subtitle">
-                  Live poängtavla för utmaningar mellan skolans klasser.
+                  Live poängtavla för utmaningar mellan skolans 3or.
                 </p>
               </div>
-              <span className="status-pill">Live League</span>
+              
             </div>
             <div className="nav-row">
               <Link className="nav-link" href="/">
