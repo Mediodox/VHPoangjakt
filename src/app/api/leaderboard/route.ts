@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getLeaderboard } from "@/lib/public-data";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET() {
   try {

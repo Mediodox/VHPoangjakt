@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { unstable_noStore as noStore } from "next/cache";
 import type { LeaderboardRow } from "@/lib/db";
 import { assertPublicEnv } from "@/lib/env";
 
@@ -21,6 +22,7 @@ export type RecentEvent = {
 };
 
 export async function getLeaderboard(): Promise<LeaderboardRow[]> {
+  noStore();
   const { data, error } = await supabase
     .from("leaderboard_totals")
     .select("class_id, class_name, instagram_handle, total_points");
@@ -29,6 +31,7 @@ export async function getLeaderboard(): Promise<LeaderboardRow[]> {
 }
 
 export async function getRecentEvents(limit = 50): Promise<RecentEvent[]> {
+  noStore();
   const { data, error } = await supabase
     .from("recent_events")
     .select(

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getLeaderboard, getRecentEvents } from "@/lib/public-data";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function HomePage() {
   const [leaderboard, recent] = await Promise.all([
