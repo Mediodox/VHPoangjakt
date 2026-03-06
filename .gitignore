@@ -25,3 +25,9 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# python worker
+python-worker/tmp/
+python-worker/.env
+**/__pycache__/
+*.pyc

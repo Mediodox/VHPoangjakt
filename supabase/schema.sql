@@ -13,6 +13,7 @@ create table if not exists public.classes (
 create table if not exists public.challenges (
   id uuid primary key default gen_random_uuid(),
   title text not null unique,
+  challenge_number integer check (challenge_number is null or challenge_number > 0),
   default_points integer not null check (default_points >= 0),
   tags text[] not null default '{}',
   active boolean not null default true,
@@ -81,6 +82,10 @@ create index if not exists idx_posts_handle_posted_at
 
 create index if not exists idx_candidates_status_created
   on public.point_candidates (status, created_at desc);
+
+create unique index if not exists idx_challenges_challenge_number
+  on public.challenges (challenge_number)
+  where challenge_number is not null;
 
 create index if not exists idx_events_class_created
   on public.point_events (class_id, created_at desc);
