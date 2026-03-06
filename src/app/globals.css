@@ -236,7 +236,7 @@ main {
 
 .score-positive {
   color: #ffc37d;
-  border-color: rgba(255, 164, 78, 0.6);
+  border-color: rgba(237, 255, 78, 0.671);
   background: rgba(255, 165, 82, 0.13);
 }
 
@@ -256,7 +256,7 @@ main {
 .podium-card {
   border-radius: 16px 16px 10px 10px;
   padding: 10px;
-  border: 1px solid rgba(255, 122, 71, 0.3);
+  border: 1px solid rgba(255, 123, 71, 0.384);
   background: rgba(51, 30, 22, 0.62);
   transform: translateY(14px);
   opacity: 0;
@@ -329,7 +329,7 @@ main {
   top: 6px;
   bottom: 6px;
   width: 2px;
-  background: linear-gradient(180deg, rgba(255, 162, 86, 0.65), rgba(255, 83, 56, 0.5));
+  background: linear-gradient(180deg, rgba(255, 139, 86, 0.74), rgba(255, 83, 56, 0.5));
 }
 
 .timeline-item {
@@ -387,7 +387,7 @@ main {
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  border: 1px solid rgba(255, 154, 61, 0.58);
+  border: 1px solid rgba(255, 106, 61, 0.58);
   background: rgba(255, 98, 52, 0.18);
   color: #ffe4ca;
   font-size: 0.8rem;
@@ -399,8 +399,8 @@ main {
 
 .insta-button:hover {
   transform: translateY(-1px);
-  border-color: rgba(255, 187, 87, 0.75);
-  box-shadow: 0 0 16px rgba(255, 116, 58, 0.3);
+  border-color: rgba(255, 126, 87, 0.75);
+  box-shadow: 0 0 16px rgba(255, 114, 58, 0.486);
 }
 
 .insta-button-small {
@@ -409,7 +409,7 @@ main {
 }
 
 .empty-state {
-  border: 1px dashed rgba(255, 137, 72, 0.5);
+  border: 1px dashed rgba(255, 130, 72, 0.637);
   border-radius: 12px;
   padding: 14px;
   color: var(--text-muted);
@@ -432,7 +432,7 @@ button {
 input,
 select,
 textarea {
-  border: 1px solid rgba(255, 134, 72, 0.6);
+  border: 1px solid rgba(255, 115, 72, 0.726);
   border-radius: 8px;
   padding: 8px 10px;
   background: #1f130f;
@@ -476,6 +476,18 @@ button.danger {
 
   .podium-card {
     min-height: auto;
+  }
+
+  .podium-first {
+    order: 1;
+  }
+
+  .podium-second {
+    order: 2;
+  }
+
+  .podium-third {
+    order: 3;
   }
 
   .leaderboard-item {
