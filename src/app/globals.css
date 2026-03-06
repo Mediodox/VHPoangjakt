@@ -29,8 +29,8 @@ body {
   margin: 0;
   font-family: Inter, Segoe UI, Arial, sans-serif;
   background:
-    radial-gradient(circle at 12% 9%, rgba(255, 112, 46, 0.26), transparent 44%),
-    radial-gradient(circle at 85% 12%, rgba(255, 71, 39, 0.2), transparent 36%),
+    radial-gradient(circle at 12% 9%, rgba(255, 112, 46, 0.521), transparent 44%),
+    radial-gradient(circle at 85% 12%, rgba(255, 71, 39, 0.527), transparent 36%),
     radial-gradient(circle at 50% 100%, rgba(255, 165, 82, 0.13), transparent 45%),
     var(--bg-base);
   color: var(--text-main);
@@ -112,7 +112,7 @@ main {
 
 .nav-link:hover {
   transform: translateY(-1px);
-  border-color: rgba(255, 154, 61, 0.62);
+  border-color: rgba(255, 116, 61, 0.781);
   box-shadow: 0 0 20px rgba(255, 122, 71, 0.24);
 }
 
@@ -155,7 +155,7 @@ main {
 
 .section-title .accent {
   color: var(--neon-magenta);
-  text-shadow: 0 0 16px rgba(255, 80, 62, 0.4);
+  text-shadow: 0 0 16px rgba(255, 81, 62, 0.582);
 }
 
 .muted {
@@ -197,7 +197,7 @@ main {
 
 .leaderboard-item:hover {
   transform: translateY(-2px);
-  border-color: rgba(255, 154, 61, 0.62);
+  border-color: rgba(255, 132, 61, 0.747);
   box-shadow: 0 0 22px rgba(255, 98, 52, 0.2);
 }
 
