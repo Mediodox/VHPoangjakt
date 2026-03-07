@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
+import { RoundCountdown } from "@/components/round-countdown";
 
 export const metadata: Metadata = {
   title: "VH Poängjakt",
@@ -38,6 +39,7 @@ export default function RootLayout({
                 Admin dashboard
               </Link>
             </div>
+            <RoundCountdown />
           </header>
           {children}
         </main>

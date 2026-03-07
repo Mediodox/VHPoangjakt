@@ -45,3 +45,24 @@ export type LeaderboardRow = {
   instagram_handle: string;
   total_points: number;
 };
+
+export type ClassHeartTotalRow = {
+  class_id: string;
+  class_name: string;
+  instagram_handle: string;
+  heart_count: number;
+};
+
+export type MostLovedClassRow = {
+  class_id: string;
+  class_name: string;
+  instagram_handle: string;
+  heart_count: number;
+};
+
+export type ClassStreakRow = {
+  class_id: string;
+  class_name: string;
+  instagram_handle: string;
+  streak_days: number;
+};

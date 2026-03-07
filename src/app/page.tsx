@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { getLeaderboard, getRecentEvents } from "@/lib/public-data";
+import {
+  getClassHeartTotals,
+  getLeaderboard,
+  getMostLovedClass,
+  getRecentEvents,
+  getTopClassStreak
+} from "@/lib/public-data";
+import { HomeLeaderboardPanel } from "@/components/home-leaderboard-panel";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -14,12 +21,14 @@ function getInstagramUrl(handle: string) {
 }
 
 export default async function HomePage() {
-  const [leaderboard, recent] = await Promise.all([
+  const [leaderboard, recent, topStreak, mostLoved, heartTotals] = await Promise.all([
     getLeaderboard(),
-    getRecentEvents(8)
+    getRecentEvents(8),
+    getTopClassStreak(),
+    getMostLovedClass(),
+    getClassHeartTotals()
   ]);
   const topThree = leaderboard.slice(0, 3);
-  const rest = leaderboard.slice(3);
 
   return (
     <div className="stack">
@@ -106,41 +115,14 @@ export default async function HomePage() {
         )}
       </section>
 
-      <section className="split-grid">
-        <article className="card">
-          <h3 className="section-title">
-            Full <span className="accent">Ranking</span>
-          </h3>
-          {leaderboard.length === 0 ? (
-            <div className="empty-state">Inga klasser med poäng just nu.</div>
-          ) : (
-            <ul className="leaderboard-list">
-              {[...topThree, ...rest].map((row, index) => (
-                <li className="leaderboard-item" key={row.class_id}>
-                  <div className="row">
-                    <span className="leader-rank">#{index + 1}</span>
-                    <div className="leader-meta">
-                      <strong>{row.class_name}</strong>
-                      
-                    </div>
-                  </div>
-                  <div className="leader-actions">
-                    <span className="score-chip">{row.total_points} poäng</span>
-                    <a
-                      className="insta-button"
-                      href={getInstagramUrl(row.instagram_handle)}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Instagram
-                    </a>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </article>
+      <HomeLeaderboardPanel
+        leaderboard={leaderboard}
+        topStreak={topStreak}
+        mostLoved={mostLoved}
+        heartTotals={heartTotals}
+      />
 
+      <section className="split-grid">
         <article className="card">
           <h3 className="section-title">
             Senaste <span className="accent">Events</span>

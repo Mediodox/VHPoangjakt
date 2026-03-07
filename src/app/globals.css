@@ -97,6 +97,41 @@ main {
   gap: 10px;
 }
 
+.round-countdown {
+  margin-top: 14px;
+  border: 1px solid rgba(255, 167, 99, 0.45);
+  border-radius: 16px;
+  padding: 12px 14px;
+  background:
+    linear-gradient(145deg, rgba(58, 33, 24, 0.88), rgba(20, 12, 9, 0.92)),
+    rgba(41, 24, 18, 0.72);
+  box-shadow: 0 0 28px rgba(255, 129, 74, 0.24);
+}
+
+.round-countdown-label {
+  margin: 0;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.78rem;
+}
+
+.round-countdown-value {
+  margin: 6px 0 0;
+  font-size: clamp(2rem, 7vw, 4.3rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--neon-yellow);
+  text-shadow: 0 0 28px rgba(255, 182, 95, 0.32);
+}
+
+.round-countdown-meta {
+  margin: 8px 0 0;
+  color: #f2d7bc;
+  font-size: 0.88rem;
+}
+
 .nav-link {
   display: inline-flex;
   align-items: center;
@@ -221,6 +256,7 @@ main {
   display: flex;
   gap: 8px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .score-chip {
@@ -440,6 +476,66 @@ main {
   gap: 14px;
 }
 
+.spotlight-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.spotlight-card {
+  margin-bottom: 0;
+}
+
+.spotlight-name {
+  margin: 0;
+  font-size: clamp(1.1rem, 2.6vw, 1.45rem);
+  font-weight: 800;
+}
+
+.spotlight-value {
+  margin: 8px 0 0;
+  color: var(--neon-cyan);
+  font-size: clamp(1rem, 2.3vw, 1.2rem);
+  font-weight: 700;
+}
+
+.heart-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 104, 80, 0.6);
+  background: rgba(255, 74, 74, 0.18);
+  color: #ffe2da;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 6px 11px;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.heart-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(255, 126, 104, 0.9);
+  box-shadow: 0 0 16px rgba(255, 83, 83, 0.42);
+}
+
+.heart-icon {
+  line-height: 1;
+  font-size: 0.9rem;
+}
+
+.heart-disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.heart-cooldown-text {
+  margin: 8px 0 0;
+  width: 100%;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
 input,
 select,
 textarea,
@@ -484,6 +580,18 @@ button.danger {
 }
 
 @media (max-width: 840px) {
+  .round-countdown {
+    padding: 12px;
+  }
+
+  .round-countdown-value {
+    font-size: clamp(1.8rem, 11vw, 3rem);
+  }
+
+  .spotlight-grid {
+    grid-template-columns: 1fr;
+  }
+
   .split-grid {
     grid-template-columns: 1fr;
   }
