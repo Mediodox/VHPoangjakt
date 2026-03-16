@@ -114,10 +114,15 @@ export async function POST(request: Request) {
 
       if (heartsToDelete && heartsToDelete.length > 0) {
         const idsToDelete = heartsToDelete.map(h => h.id);
-        await supabase
+        const { error: deleteError } = await supabase
           .from("class_hearts")
           .delete()
           .in("id", idsToDelete);
+        if (deleteError) {
+          return NextResponse.json({ error: "Delete failed: " + deleteError.message }, { status: 500 });
+        }
+      } else {
+        return NextResponse.json({ error: "No hearts to delete", removed: false }, { status: 400 });
       }
 
       const classHeartCount = await getClassHeartCount(classId);
