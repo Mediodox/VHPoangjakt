@@ -21,6 +21,11 @@ create policy "public can insert class hearts"
   on public.class_hearts for insert
   with check (true);
 
+create policy "public can delete class hearts"
+  on public.class_hearts for delete
+  using (true)
+  with check (true);
+
 create or replace view public.class_heart_totals as
 select
   c.id as class_id,
