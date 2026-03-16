@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { assertPublicEnv } from "@/lib/env";
+import { assertPublicEnv, getServiceRoleKey } from "@/lib/env";
 
 assertPublicEnv();
 
@@ -13,6 +13,12 @@ const UUID_RE =
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  { auth: { persistSession: false, autoRefreshToken: false } }
+);
+
+const serviceSupabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  getServiceRoleKey(),
   { auth: { persistSession: false, autoRefreshToken: false } }
 );
 
@@ -105,7 +111,7 @@ export async function POST(request: Request) {
 
     const adminRemove = body?.adminRemove;
     if (adminRemove && adminRemove > 0) {
-      const { data: heartsToDelete } = await supabase
+      const { data: heartsToDelete } = await serviceSupabase
         .from("class_hearts")
         .select("id")
         .eq("class_id", classId)
@@ -114,7 +120,7 @@ export async function POST(request: Request) {
 
       if (heartsToDelete && heartsToDelete.length > 0) {
         const idsToDelete = heartsToDelete.map(h => h.id);
-        const { error: deleteError } = await supabase
+        const { error: deleteError } = await serviceSupabase
           .from("class_hearts")
           .delete()
           .in("id", idsToDelete);
