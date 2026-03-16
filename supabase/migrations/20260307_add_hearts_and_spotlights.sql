@@ -26,6 +26,26 @@ create policy "public can delete class hearts"
   using (true)
   with check (true);
 
+create table if not exists public.valid_voter_keys (
+  id uuid primary key default gen_random_uuid(),
+  voter_key uuid unique not null,
+  ip_address text,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists idx_valid_voter_keys_key
+  on public.valid_voter_keys (voter_key);
+
+alter table public.valid_voter_keys enable row level security;
+
+create policy "public can insert valid voter keys"
+  on public.valid_voter_keys for insert
+  with check (true);
+
+create policy "public can read valid voter keys"
+  on public.valid_voter_keys for select
+  using (true);
+
 create or replace view public.class_heart_totals as
 select
   c.id as class_id,

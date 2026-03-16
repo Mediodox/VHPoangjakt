@@ -7,6 +7,8 @@ assertPublicEnv();
 
 const HEART_VOTER_COOKIE = "vh_voter_key";
 const COOLDOWN_MS = 60 * 60 * 1000;
+const RATE_LIMIT_MS = 60 * 60 * 1000;
+const MAX_VOTES_PER_IP = 10;
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -177,81 +179,73 @@ export async function POST(request: Request) {
       : undefined;
     const { voterKey, shouldSetCookie } = ensureVoterKey(rawCookieValue);
 
+    const clientIP = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() 
+      || request.headers.get("x-real-ip") 
+      || "unknown";
+
+    const { data: validKey } = await serviceSupabase
+      .from("valid_voter_keys")
+      .select("id")
+      .eq("voter_key", voterKey)
+      .maybeSingle();
+
+    if (!validKey) {
+      const { error: insertKeyError } = await serviceSupabase
+        .from("valid_voter_keys")
+        .insert({ voter_key: voterKey, ip_address: clientIP });
+      if (insertKeyError) {
+        return NextResponse.json(
+          { error: "Kunde inte registrera röst." },
+          { status: 500 }
+        );
+      }
+    }
+
     const now = Date.now();
-    const { data: latestVote, error: latestVoteError } = await supabase
+    const { data: globalRecentVote } = await serviceSupabase
       .from("class_hearts")
       .select("created_at")
-      .eq("class_id", classId)
       .eq("voter_key", voterKey)
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle();
 
-    if (latestVoteError) {
-      if (relationMissing(latestVoteError, "public.class_hearts")) {
-        return missingMigrationResponse();
-      }
-      return NextResponse.json(
-        { error: latestVoteError.message },
-        { status: 500 }
-      );
+    let globalRemainingMs = 0;
+    if (globalRecentVote?.created_at) {
+      const lastMs = new Date(globalRecentVote.created_at).getTime();
+      globalRemainingMs = Math.max(0, lastMs + COOLDOWN_MS - now);
     }
 
-    let remainingMs = 0;
-    if (latestVote?.created_at) {
-      const lastMs = new Date(latestVote.created_at).getTime();
-      remainingMs = Math.max(0, lastMs + COOLDOWN_MS - now);
-    }
-
-    if (remainingMs > 0) {
-      let classHeartCount = 0;
-      const { data: classHeartsRow, error: heartsError } = await supabase
+    if (globalRemainingMs > 0) {
+      const { data: classHeartsRow } = await supabase
         .from("class_heart_totals")
         .select("heart_count")
         .eq("class_id", classId)
         .maybeSingle();
-      if (heartsError && !relationMissing(heartsError, "public.class_heart_totals")) {
-        return NextResponse.json({ error: heartsError.message }, { status: 500 });
-      }
-      if (relationMissing(heartsError, "public.class_heart_totals")) {
-        try {
-          classHeartCount = await getClassHeartCount(classId);
-        } catch (error) {
-          if (relationMissing(error as SupabaseLikeError, "public.class_hearts")) {
-            return missingMigrationResponse();
-          }
-          return NextResponse.json(
-            { error: (error as Error).message ?? "Något gick fel." },
-            { status: 500 }
-          );
-        }
-      } else {
-        classHeartCount = classHeartsRow?.heart_count ?? 0;
-      }
 
-      const response = NextResponse.json(
+      return NextResponse.json(
         {
           ok: false,
-          cooldownRemainingSeconds: Math.ceil(remainingMs / 1000),
-          classHeartCount
+          cooldownRemainingSeconds: Math.ceil(globalRemainingMs / 1000),
+          classHeartCount: classHeartsRow?.heart_count ?? 0
         },
         { status: 429 }
       );
-      if (shouldSetCookie) {
-        response.cookies.set({
-          name: HEART_VOTER_COOKIE,
-          value: voterKey,
-          httpOnly: true,
-          sameSite: "lax",
-          secure: process.env.NODE_ENV === "production",
-          path: "/",
-          maxAge: 60 * 60 * 24 * 365 * 2
-        });
-      }
-      return response;
     }
 
-    const { error: insertError } = await supabase.from("class_hearts").insert({
+    const { count: ipVoteCount } = await serviceSupabase
+      .from("class_hearts")
+      .select("id", { count: "exact", head: true })
+      .gte("created_at", new Date(now - RATE_LIMIT_MS).toISOString());
+
+    if (ipVoteCount !== null && ipVoteCount >= MAX_VOTES_PER_IP) {
+      return NextResponse.json(
+        { error: "För många röster från denna IP. Försök igen senare." },
+        { status: 429 }
+      );
+    }
+
+    const { error: insertError } = await serviceSupabase.from("class_hearts").insert({
       class_id: classId,
       voter_key: voterKey
     });
