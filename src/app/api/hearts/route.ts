@@ -189,8 +189,16 @@ export async function POST(request: Request) {
       .eq("voter_key", voterKey)
       .maybeSingle();
 
-    if (validKeyError && validKeyError.code !== "PGRST116") {
-      console.error("Valid key lookup error:", validKeyError);
+    const tableMissing = validKeyError && (
+      validKeyError.code === "PGRST116" || 
+      validKeyError.code === "PGRST205"
+    );
+
+    if (tableMissing || validKeyError) {
+      return NextResponse.json(
+        { error: "Röstsystemet är under underhåll. Försök igen senare." },
+        { status: 503 }
+      );
     }
 
     if (!validKey) {
@@ -200,12 +208,11 @@ export async function POST(request: Request) {
         .select("id")
         .single();
 
-      if (insertKeyError && insertKeyError.code !== "PGRST116") {
-        if (relationMissing(insertKeyError, "public.valid_voter_keys")) {
-          console.log("valid_voter_keys table not found, proceeding without validation");
-        } else {
-          console.error("Failed to register voter key:", insertKeyError);
-        }
+      if (insertKeyError) {
+        return NextResponse.json(
+          { error: "Röstsystemet är under underhåll. Försök igen senare." },
+          { status: 503 }
+        );
       }
     }
 
