@@ -183,21 +183,29 @@ export async function POST(request: Request) {
       || request.headers.get("x-real-ip") 
       || "unknown";
 
-    const { data: validKey } = await serviceSupabase
+    const { data: validKey, error: validKeyError } = await serviceSupabase
       .from("valid_voter_keys")
       .select("id")
       .eq("voter_key", voterKey)
       .maybeSingle();
 
+    if (validKeyError && validKeyError.code !== "PGRST116") {
+      console.error("Valid key lookup error:", validKeyError);
+    }
+
     if (!validKey) {
       const { error: insertKeyError } = await serviceSupabase
         .from("valid_voter_keys")
-        .insert({ voter_key: voterKey, ip_address: clientIP });
-      if (insertKeyError) {
-        return NextResponse.json(
-          { error: "Kunde inte registrera röst." },
-          { status: 500 }
-        );
+        .insert({ voter_key: voterKey, ip_address: clientIP })
+        .select("id")
+        .single();
+
+      if (insertKeyError && insertKeyError.code !== "PGRST116") {
+        if (relationMissing(insertKeyError, "public.valid_voter_keys")) {
+          console.log("valid_voter_keys table not found, proceeding without validation");
+        } else {
+          console.error("Failed to register voter key:", insertKeyError);
+        }
       }
     }
 
