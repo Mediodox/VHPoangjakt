@@ -120,27 +120,12 @@ export async function POST(request: Request) {
           .in("id", idsToDelete);
       }
 
-      const [{ data: classHeartsRow, error: heartsError }, { data: mostLovedRow, error: mostLovedError }] =
-        await Promise.all([
-          supabase
-            .from("class_heart_totals")
-            .select("heart_count")
-            .eq("class_id", classId)
-            .maybeSingle(),
-          supabase
-            .from("most_loved_class")
-            .select("class_id, class_name, heart_count")
-            .maybeSingle()
-        ]);
+      const classHeartCount = await getClassHeartCount(classId);
 
-      let classHeartCount = classHeartsRow?.heart_count ?? 0;
-      if (relationMissing(heartsError, "public.class_heart_totals")) {
-        try {
-          classHeartCount = await getClassHeartCount(classId);
-        } catch {
-          classHeartCount = 0;
-        }
-      }
+      const { data: mostLovedRow, error: mostLovedError } = await supabase
+        .from("most_loved_class")
+        .select("class_id, class_name, heart_count")
+        .maybeSingle();
 
       let mostLoved:
         | {
@@ -513,27 +498,27 @@ export async function DELETE(request: Request) {
       }
     }
 
-    let mostLoved:
-      | {
-          classId: string;
-          className: string;
-          heartCount: number;
-        }
-      | null = null;
+      let mostLoved:
+        | {
+            classId: string;
+            className: string;
+            heartCount: number;
+          }
+        | null = null;
 
-    if (mostLovedRow) {
-      mostLoved = {
-        classId: mostLovedRow.class_id,
-        className: mostLovedRow.class_name,
-        heartCount: mostLovedRow.heart_count
-      };
-    } else if (relationMissing(mostLovedError, "public.most_loved_class")) {
-      try {
-        mostLoved = await getMostLovedFromBaseTables();
-      } catch {
-        mostLoved = null;
+      if (mostLovedRow) {
+        mostLoved = {
+          classId: mostLovedRow.class_id,
+          className: mostLovedRow.class_name,
+          heartCount: mostLovedRow.heart_count
+        };
+      } else {
+        try {
+          mostLoved = await getMostLovedFromBaseTables();
+        } catch {
+          mostLoved = null;
+        }
       }
-    }
 
     const response = NextResponse.json({
       ok: true,
