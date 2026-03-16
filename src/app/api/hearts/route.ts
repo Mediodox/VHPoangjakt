@@ -109,7 +109,7 @@ export async function POST(request: Request) {
         .from("class_hearts")
         .select("id")
         .eq("class_id", classId)
-        .order("created_at", "desc")
+        .order("created_at", { ascending: false })
         .limit(adminRemove);
 
       if (heartsToDelete && heartsToDelete.length > 0) {
@@ -390,7 +390,7 @@ export async function DELETE(request: Request) {
           .from("class_hearts")
           .select("id")
           .eq("class_id", classId)
-          .order("created_at", "desc")
+          .order("created_at", { ascending: false })
           .limit(removeCount);
 
         if (heartsToDelete && heartsToDelete.length > 0) {
