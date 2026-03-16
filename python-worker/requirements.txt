@@ -1,0 +1,5 @@
+instaloader
+opencv-python
+pytesseract
+requests
+python-dotenv
